@@ -12,5 +12,6 @@ namespace ElectionApiFramework.Interfaces
         Boolean Login(int VotersID, string Pin);
         Person GetPerson(int VotersID);
         Boolean AddVotes(Election election);
+        Boolean LockOutVoter(int personID);
     }
 }

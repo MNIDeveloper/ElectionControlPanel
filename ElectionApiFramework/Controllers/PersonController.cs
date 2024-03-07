@@ -15,7 +15,7 @@ namespace ElectionApiFramework.Controllers
     
     public class PersonController : ApiController
     {
-        private AdminBLL admin = new AdminBLL();
+        private IAdministrative admin = new AdminBLL();
 
         public Boolean AddPerson(Person person)
         {

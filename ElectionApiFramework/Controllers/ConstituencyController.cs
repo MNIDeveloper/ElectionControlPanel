@@ -15,7 +15,7 @@ namespace ElectionApiFramework.Controllers
     
     public class ConstituencyController : ApiController
     {
-        private AdminBLL admin = new AdminBLL();
+        private IAdministrative admin = new AdminBLL();
        
         public Boolean AddConstituancy(Constituancy constituancy)
         {

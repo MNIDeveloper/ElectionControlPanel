@@ -17,7 +17,7 @@ namespace ElectionApiFramework.Controllers
    
     public class ElectionController :ApiController
     {
-        private ElectionBLL _election = new ElectionBLL();
+        private IElection _election = new ElectionBLL();
 
 
         // GET api/Election        

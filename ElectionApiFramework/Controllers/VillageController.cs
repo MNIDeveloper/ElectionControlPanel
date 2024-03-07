@@ -15,7 +15,7 @@ namespace ElectionApiFramework.Controllers
    
     public class VillageController : ApiController
     {
-        private AdminBLL admin = new AdminBLL();
+        private IAdministrative admin = new AdminBLL();
 
         public Boolean AddVillage(Village village)
         {

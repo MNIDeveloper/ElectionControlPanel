@@ -15,7 +15,7 @@ namespace ElectionApiFramework.Controllers
     
     public class ParishController : ApiController
     {
-        private AdminBLL admin = new AdminBLL();
+        private IAdministrative admin = new AdminBLL();
 
         public Boolean AddParish(Parish parish)
         {

@@ -48,6 +48,10 @@ namespace ElectionApiFramework.BLL
             {
                 return false;
             }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
             catch (DbEntityValidationException)
             {
                 return false;
@@ -89,6 +93,10 @@ namespace ElectionApiFramework.BLL
                 }
             }
             catch (NullReferenceException)
+            {
+                return false;
+            }
+            catch (InvalidOperationException)
             {
                 return false;
             }

@@ -15,7 +15,7 @@ namespace ElectionApiFramework.Controllers
     
     public class AdminController : ApiController
     {
-        private AdminBLL admin = new AdminBLL();
+        private IAdministrative admin = new AdminBLL();
         public Boolean UserLogin(string Username, string Password)
         {
             return admin.UserLogin(Username, Password);

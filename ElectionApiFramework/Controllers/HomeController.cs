@@ -1,5 +1,6 @@
 ﻿using ElectionApiFramework.BLL;
 using ElectionApiFramework.Helpers;
+using ElectionApiFramework.Interfaces;
 using ElectionApiFramework.Models;
 using ElectionApiFramework.ViewModels;
 using Microsoft.Ajax.Utilities;
@@ -21,7 +22,7 @@ namespace ElectionApiFramework.Controllers
     
     public class HomeController : Controller
     {
-        private AdminBLL admin = new AdminBLL();
+        private readonly IAdministrative admin = new AdminBLL();
         #region Index 
         public ActionResult Index()
         {

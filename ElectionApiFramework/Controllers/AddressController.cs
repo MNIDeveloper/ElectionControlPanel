@@ -15,7 +15,7 @@ namespace ElectionApiFramework.Controllers
     
     public class AddressController : ApiController
     {
-        private AdminBLL admin = new AdminBLL();
+        private IAdministrative admin = new AdminBLL();
 
         
         public Boolean AddAddress(Address address)

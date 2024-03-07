@@ -1,0 +1,66 @@
+﻿@model ElectionApiFramework.Models.VotersIdModel
+@{
+
+    switch (ViewBag.result)
+    {
+        case 1:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("MessageModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        default:         
+            break;
+
+    }
+}
+
+<div style="text-align:center;">
+    <h1 class="text-primary">Voter's ID</h1>
+</div>
+
+<!-- Modal -->
+<div>
+    <table border="1" cellpadding="5" class="bg-white" background="~/Images/Flag_edit2.png">
+        <tr>
+            <td colspan="3" align="Center" class="text-light">
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Montserrat Voter's ID</strong><img src="~/Images/CoatOfArms.png" width="30" height="40" align="right" />
+            </td>
+        </tr>
+        <tr>
+            <td><img src="@Url.Content(Model.VoterImage)" width="100" height="120" /></td>
+            <td class="text-light">
+                <strong>Full Name</strong> : @Model.FullName<br />
+                <strong>DOB</strong> : @Model.DOB.ToString("dd/MM/yyyy") <br />
+                <strong>Address</strong> : @Model.Address <br />
+                <strong>Constituency</strong> : @Model.Constituency <br />
+                <strong>Voter's ID</strong> : @Model.VotersID <br />
+                <strong>Pin</strong> : @Model.Pin
+            </td>
+            <td style="vertical-align:bottom"><img src="@Url.Content(Model.VoterBarcode)" width="75" height="75" /></td>
+        </tr>
+    </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="MessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">Warning Alert</h1><h1 class="text-warning">!</h1>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger" >@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

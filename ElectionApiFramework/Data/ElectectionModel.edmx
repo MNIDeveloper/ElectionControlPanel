@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="db_aa15ed_electionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Street" Type="varchar" MaxLength="50" />
+          <Property Name="Village" Type="int" Nullable="false" />
+          <Property Name="Parish" Type="int" Nullable="false" />
+          <Property Name="Postcode" Type="varchar" MaxLength="50" />
+          <Property Name="Constituancy" Type="int" Nullable="false" />
+          <Property Name="IsCurrent" Type="bit" Nullable="false" />
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="DateMoved" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblCandidate">
+          <Key>
+            <PropertyRef Name="CandidateID" />
+          </Key>
+          <Property Name="CandidateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="PartyID" Type="int" Nullable="false" />
+          <Property Name="Constituancy" Type="int" Nullable="false" />
+          <Property Name="CandidateImage" Type="varchar(max)" Nullable="false" />
+          <Property Name="CandidateImageWeb" Type="varchar(max)" Nullable="false" />
+          <Property Name="IsCurrent" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblElection">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VotersID" Type="int" Nullable="false" />
+          <Property Name="ElectionDate" Type="datetime" Nullable="false" />
+          <Property Name="Constituancy" Type="int" Nullable="false" />
+          <Property Name="Candidate1" Type="int" Nullable="false" />
+          <Property Name="Candidate2" Type="int" Nullable="false" />
+          <Property Name="Candidate3" Type="int" Nullable="false" />
+          <Property Name="Candidate4" Type="int" Nullable="false" />
+          <Property Name="Candidate5" Type="int" Nullable="false" />
+          <Property Name="Candidate6" Type="int" Nullable="false" />
+          <Property Name="Candidate7" Type="int" Nullable="false" />
+          <Property Name="Candidate8" Type="int" Nullable="false" />
+          <Property Name="Candidate9" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPerson">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" />
+          <Property Name="DOB" Type="datetime" Nullable="false" />
+          <Property Name="Alias" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="int" />
+          <Property Name="RegDate" Type="datetime" Nullable="false" />
+          <Property Name="vFlag" Type="bit" Nullable="false" />
+          <Property Name="Pin" Type="varchar" MaxLength="50" />
+          <Property Name="SocialSecurity" Type="int" />
+          <Property Name="PersonImage" Type="varchar(max)" Nullable="false" />
+          <Property Name="QrCode" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Position" Type="int" Nullable="false" />
+          <Property Name="Flag" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tlkpConstituancy">
+          <Key>
+            <PropertyRef Name="ConstituancyID" />
+          </Key>
+          <Property Name="ConstituancyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConstituancyName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tlkpParish">
+          <Key>
+            <PropertyRef Name="ParishID" />
+          </Key>
+          <Property Name="ParishID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParishName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tlkpParty">
+          <Key>
+            <PropertyRef Name="PartyID" />
+          </Key>
+          <Property Name="PartyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartyName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tlkpVillage">
+          <Key>
+            <PropertyRef Name="VillageID" />
+          </Key>
+          <Property Name="VillageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VillageName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Function Name="CloseElection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ElectionSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ElectionTally" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PartyByVillages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="StartElection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="db_aa15ed_electionModelStoreContainer">
+          <EntitySet Name="tblAddress" EntityType="Self.tblAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCandidate" EntityType="Self.tblCandidate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblElection" EntityType="Self.tblElection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPerson" EntityType="Self.tblPerson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tlkpConstituancy" EntityType="Self.tlkpConstituancy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tlkpParish" EntityType="Self.tlkpParish" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tlkpParty" EntityType="Self.tlkpParty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tlkpVillage" EntityType="Self.tlkpVillage" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_aa15ed_electionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tlkpConstituancy">
+          <Key>
+            <PropertyRef Name="ConstituancyID" />
+          </Key>
+          <Property Name="ConstituancyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConstituancyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tlkpParish">
+          <Key>
+            <PropertyRef Name="ParishID" />
+          </Key>
+          <Property Name="ParishID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParishName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tlkpParty">
+          <Key>
+            <PropertyRef Name="PartyID" />
+          </Key>
+          <Property Name="PartyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tlkpVillage">
+          <Key>
+            <PropertyRef Name="VillageID" />
+          </Key>
+          <Property Name="VillageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VillageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ElectionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tlkpConstituancies" EntityType="Self.tlkpConstituancy" />
+          <EntitySet Name="tlkpParishes" EntityType="Self.tlkpParish" />
+          <EntitySet Name="tlkpParties" EntityType="Self.tlkpParty" />
+          <EntitySet Name="tlkpVillages" EntityType="Self.tlkpVillage" />
+          <EntitySet Name="tblElections" EntityType="db_aa15ed_electionModel.tblElection" />
+          <EntitySet Name="tblAddresses" EntityType="db_aa15ed_electionModel.tblAddress" />
+          <EntitySet Name="tblCandidates" EntityType="db_aa15ed_electionModel.tblCandidate" />
+          <EntitySet Name="tblPersons" EntityType="db_aa15ed_electionModel.tblPerson" />
+          <EntitySet Name="tblUsers" EntityType="db_aa15ed_electionModel.tblUser" />
+          <FunctionImport Name="ElectionTally" />
+          <FunctionImport Name="PartyByVillages" />
+          <FunctionImport Name="ElectionSummary" />
+          <FunctionImport Name="CloseElection" />
+          <FunctionImport Name="StartElection" />
+        </EntityContainer>
+        <EntityType Name="tblElection">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VotersID" Type="Int32" Nullable="false" />
+          <Property Name="ElectionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Constituancy" Type="Int32" Nullable="false" />
+          <Property Name="Candidate1" Type="Int32" Nullable="false" />
+          <Property Name="Candidate2" Type="Int32" Nullable="false" />
+          <Property Name="Candidate3" Type="Int32" Nullable="false" />
+          <Property Name="Candidate4" Type="Int32" Nullable="false" />
+          <Property Name="Candidate5" Type="Int32" Nullable="false" />
+          <Property Name="Candidate6" Type="Int32" Nullable="false" />
+          <Property Name="Candidate7" Type="Int32" Nullable="false" />
+          <Property Name="Candidate8" Type="Int32" Nullable="false" />
+          <Property Name="Candidate9" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Village" Type="Int32" Nullable="false" />
+          <Property Name="Parish" Type="Int32" Nullable="false" />
+          <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Constituancy" Type="Int32" Nullable="false" />
+          <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+          <Property Name="PersonID" Type="Int32" Nullable="false" />
+          <Property Name="DateMoved" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblCandidate">
+          <Key>
+            <PropertyRef Name="CandidateID" />
+          </Key>
+          <Property Name="CandidateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonID" Type="Int32" Nullable="false" />
+          <Property Name="PartyID" Type="Int32" Nullable="false" />
+          <Property Name="Constituancy" Type="Int32" Nullable="false" />
+          <Property Name="CandidateImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CandidateImageWeb" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPerson">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Alias" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="Int32" />
+          <Property Name="RegDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="vFlag" Type="Boolean" Nullable="false" />
+          <Property Name="Pin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SocialSecurity" Type="Int32" />
+          <Property Name="PersonImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="QrCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="Int32" Nullable="false" />
+          <Property Name="Flag" Type="Boolean" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_aa15ed_electionModelStoreContainer" CdmEntityContainer="ElectionEntities">
+          <EntitySetMapping Name="tlkpConstituancies">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpConstituancy">
+              <MappingFragment StoreEntitySet="tlkpConstituancy">
+                <ScalarProperty Name="ConstituancyID" ColumnName="ConstituancyID" />
+                <ScalarProperty Name="ConstituancyName" ColumnName="ConstituancyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tlkpParishes">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpParish">
+              <MappingFragment StoreEntitySet="tlkpParish">
+                <ScalarProperty Name="ParishID" ColumnName="ParishID" />
+                <ScalarProperty Name="ParishName" ColumnName="ParishName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tlkpParties">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpParty">
+              <MappingFragment StoreEntitySet="tlkpParty">
+                <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+                <ScalarProperty Name="PartyName" ColumnName="PartyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tlkpVillages">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpVillage">
+              <MappingFragment StoreEntitySet="tlkpVillage">
+                <ScalarProperty Name="VillageID" ColumnName="VillageID" />
+                <ScalarProperty Name="VillageName" ColumnName="VillageName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblElections">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblElection">
+              <MappingFragment StoreEntitySet="tblElection">
+                <ScalarProperty Name="Candidate9" ColumnName="Candidate9" />
+                <ScalarProperty Name="Candidate8" ColumnName="Candidate8" />
+                <ScalarProperty Name="Candidate7" ColumnName="Candidate7" />
+                <ScalarProperty Name="Candidate6" ColumnName="Candidate6" />
+                <ScalarProperty Name="Candidate5" ColumnName="Candidate5" />
+                <ScalarProperty Name="Candidate4" ColumnName="Candidate4" />
+                <ScalarProperty Name="Candidate3" ColumnName="Candidate3" />
+                <ScalarProperty Name="Candidate2" ColumnName="Candidate2" />
+                <ScalarProperty Name="Candidate1" ColumnName="Candidate1" />
+                <ScalarProperty Name="Constituancy" ColumnName="Constituancy" />
+                <ScalarProperty Name="ElectionDate" ColumnName="ElectionDate" />
+                <ScalarProperty Name="VotersID" ColumnName="VotersID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAddresses">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblAddress">
+              <MappingFragment StoreEntitySet="tblAddress">
+                <ScalarProperty Name="DateMoved" ColumnName="DateMoved" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="Constituancy" ColumnName="Constituancy" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Parish" ColumnName="Parish" />
+                <ScalarProperty Name="Village" ColumnName="Village" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCandidates">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblCandidate">
+              <MappingFragment StoreEntitySet="tblCandidate">
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="CandidateImageWeb" ColumnName="CandidateImageWeb" />
+                <ScalarProperty Name="CandidateImage" ColumnName="CandidateImage" />
+                <ScalarProperty Name="Constituancy" ColumnName="Constituancy" />
+                <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPersons">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblPerson">
+              <MappingFragment StoreEntitySet="tblPerson">
+                <ScalarProperty Name="QrCode" ColumnName="QrCode" />
+                <ScalarProperty Name="PersonImage" ColumnName="PersonImage" />
+                <ScalarProperty Name="SocialSecurity" ColumnName="SocialSecurity" />
+                <ScalarProperty Name="Pin" ColumnName="Pin" />
+                <ScalarProperty Name="vFlag" ColumnName="vFlag" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ElectionTally" FunctionName="db_aa15ed_electionModel.Store.ElectionTally" />
+          <FunctionImportMapping FunctionImportName="PartyByVillages" FunctionName="db_aa15ed_electionModel.Store.PartyByVillages" />
+          <FunctionImportMapping FunctionImportName="ElectionSummary" FunctionName="db_aa15ed_electionModel.Store.ElectionSummary" />
+          <FunctionImportMapping FunctionImportName="CloseElection" FunctionName="db_aa15ed_electionModel.Store.CloseElection" />
+          <FunctionImportMapping FunctionImportName="StartElection" FunctionName="db_aa15ed_electionModel.Store.StartElection" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

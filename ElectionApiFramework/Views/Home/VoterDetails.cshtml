@@ -1,0 +1,378 @@
+﻿@model ElectionApiFramework.ViewModels.VoterVM
+@{
+    switch (ViewBag.result)
+    {
+        case 1:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("MessageModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 4:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("EditModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 3:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("DeleteModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        default:
+            break;
+
+    }
+}
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <a href="@Url.Action("Logout","Home")" class="btn btn-outline-light me-2" type="button">Logout</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">Voter Details</h1>
+</div>
+<div class="container-fluid bg-light h-100">
+    <div class="row">
+        <div class="col-6">
+            @using (Html.BeginForm("VoterUpdate", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <table cellpadding="2">
+                <tr>
+                    <td colspan="3" align="center"><h4 class="text-primary"> <strong>Person Section</strong></h4></td>
+                </tr>
+                <tr>
+                    <td><label name="lblPersonID" class="text-primary"><strong>PersonID:</strong></label></td>
+                    <td><span class="text-primary"><strong>@Html.TextBoxFor(u => u.PersonId, new { @class = "form-control", @readonly = "true" })</strong></span></td>
+                </tr>
+                <tr>
+                    <td hidden><label name="lblRegDate" class="text-primary" hidden><strong>RegDate:</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.RegDate, "", new { @class = "form-control", @hidden = "true" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbFName" class="text-primary"><strong>First Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.FirstName, "", new { @class = "form-control" }) </td>
+                    <td>@Html.ValidationMessageFor(u => u.FirstName, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbMName" class="text-primary"><strong>Middle Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.MiddleName, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblLName" class="text-primary"><strong>Last Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.LastName, "", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.LastName, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblGender" class="text-primary"><strong>Gender :</strong></label></td>
+                    <td>
+                        @Html.DropDownListFor(u => u.Gender, new List<SelectListItem>{
+                               new SelectListItem {Value ="Male",Text = "Male" },
+                               new SelectListItem {Value ="Female",Text = "Female" }},
+                               "-Select Gender-", new { @class = "form-control" })
+                    </td>
+                    <td>@Html.ValidationMessageFor(u => u.Gender, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblDOB" class="text-primary"><strong>DOB :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.Dob, "{0:dd/MM/yyyy}", new { @type = "datetime", @class = "form-control", placeHolder = "dd/MM/yyyy" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.Dob, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblAlias" class="text-primary"><strong>Alias :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.Alias, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblSocial" class="text-primary"><strong>Social Security #:</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.SocialSecurity, "", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.SocialSecurity, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblPin" class="text-primary"><strong>Pin #:</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.Pin, "", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.Pin, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td hidden><label name="lbImage" class="text-primary"><strong>Voter Image :</strong></label></td>
+                    <td hidden>@Html.TextBoxFor(u => u.PersonImage, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td hidden><label name="lbAddress" class="text-primary"><strong>Address :</strong></label></td>
+                    <td hidden>@Html.TextBoxFor(u => u.Address, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbImage" class="text-primary"><strong>Voter Image :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.ImageData, "", new { @class = "form-control", @type = "file" })</td>
+                </tr>
+                <tr>
+                    <td><input name="btnLogin" type="submit" class="btn btn-outline-success" value="Update Voter" /></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Add Address
+                        </button>
+                        <a href="/Home/Votersid/@Model.PersonId" target="_blank" class="btn btn-outline-warning" type="button">Voters ID</a>
+                    </td>
+                </tr>
+            </table>
+            }
+        </div>
+        <div class="col-6">
+            <table id="tblVoterAddress" class="table-bordered border-primary-subtle table table-primary table-striped">                
+                <thead>
+                    <tr><td colspan="7" align="center"><h4 class="text-primary"> <strong>Address List</strong></h4></td></tr>
+                    <tr>
+                        <th class="text-primary">Street</th>
+                        <th class="text-primary">Village</th>
+                        <th class="text-primary">Parish</th>
+                        <th class="text-primary">Postcode</th>
+                        <th class="text-primary">Constitency</th>
+                        <th class="text-primary">DateMoved</th>
+                        <th class="text-primary">Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var address in @Model.VoterAddresses)
+                    {
+                        <tr>
+                            <td>@address.Street</td>
+                            <td>@address.Village</td>
+                            <td>@address.Parish</td>
+                            <td>@address.Postcode</td>
+                            <td>@address.Constituancy</td>
+                            <td>@address.DateMoved.Value.ToShortDateString()</td>
+                            <td>@Html.ActionLink("Edit", "AddressEdit", new { id = address.AddressId }, new { @class = "text-success" }) @Html.ActionLink("Delete", "VoterAddressDelete", new { id = address.AddressId }, new { @class = "text-danger" })</td>
+                        </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="MessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Message Alert</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EditAddressModal -->
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Address Options</h1>
+            </div>
+            @using (Html.BeginForm("AddressUpdate", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td colspan="3" align="center"><h4 class="text-primary"> <strong>Edit Address</strong></h4></td>
+                        </tr>
+                        <tr>
+                            <td hidden><label name="lblPersonID" class="text-primary" hidden><strong>Address ID:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddressModify.AddressId, "", new { @class = "form-control", @hidden = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td hidden><label name="lblPersonID" class="text-primary" hidden><strong>Person ID:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddressModify.PersonId, "", new { @class = "form-control", @hidden = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblStreet" class="text-primary"><strong>Street:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddressModify.Street, "", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillage" class="text-primary"><strong>Village:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.AddressModify.Village, new SelectList(Model.villages, "VillageId", " VillageName"), "-Select Village-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblParish" class="text-primary"><strong>Parish:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.AddressModify.Parish, new SelectList(Model.parishes, "ParishId", "ParishName"), "-Select Parish-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPostcode" class="text-primary"><strong>Postcode:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddressModify.Postcode, "", new { @placeholder = "MSR XXXX", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblConstituency" class="text-primary"><strong>Constituency:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.AddressModify.Constituancy, new SelectList(Model.constituencies, "ConstituancyId", "ConstituancyName"), "-Select Constituency-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblCurrent" class="text-primary"><strong>Current Address:</strong></label></td>
+                            <td>@Html.CheckBoxFor(u => u.AddressModify.IsCurrent)</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblDateMoved" class="text-primary"><strong>Date Moved:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddressModify.DateMoved, "{0:MM/dd/yyyy}", new { @class = "form-control", @type = "datetime" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Close</button>
+                    <button id="btnLogin" type="submit" class="btn btn-outline-success">Update Address</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Address Options</h1>
+            </div>
+            @using (Html.BeginForm("VoterAddressDelete", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td colspan="3" align="center"><h4 class="text-danger"> <strong>Confirm Address Delete?</strong></h4></td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPersonID" class="text-primary"><strong>Address ID:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.AddressId, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPersonID" class="text-primary"><strong>Person ID:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.PersonId, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblStreet" class="text-primary"><strong>Street:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.Street, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillage" class="text-primary"><strong>Village:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.Village, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblParish" class="text-primary"><strong>Parish:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.Parish, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPostcode" class="text-primary"><strong>Postcode:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.Postcode, "", new { @placeholder = "MSR XXXX", @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblConstituency" class="text-primary"><strong>Constituency:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.Constituancy, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblCurrent" class="text-primary"><strong>Current Address:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.IsCurrent, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblDateMoved" class="text-primary"><strong>Date Moved:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressDetails.DateMoved, "{0:MM/dd/yyyy}", new { @class = "form-control", @type = "datetime", @readonly = "true" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Close</button>
+                    <button id="btnLogin" type="submit" class="btn btn-outline-success">Delete Address</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Address Options</h1>
+            </div>
+            @using (Html.BeginForm("AddVoterAddress", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <table>                        
+                        <tr>
+                            <td colspan="3" align="center"><h4 class="text-primary"> <strong>Address Section</strong></h4></td>
+                        </tr>
+                        <tr>
+                            <td hidden><label name="lblPersonID" class="text-primary" hidden><strong>Street:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.NewAddress.PersonId, "", new { @class = "form-control", @hidden = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblStreet" class="text-primary"><strong>Street:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.NewAddress.Street, "", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillage" class="text-primary"><strong>Village:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.NewAddress.Village, new SelectList(Model.villages, "VillageId", " VillageName"), "-Select Village-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblParish" class="text-primary"><strong>Parish:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.NewAddress.Parish, new SelectList(Model.parishes, "ParishId", "ParishName"), "-Select Parish-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPostcode" class="text-primary"><strong>Postcode:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.NewAddress.Postcode, "", new { @placeholder = "MSR XXXX", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblConstituency" class="text-primary"><strong>Constituency:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.NewAddress.Constituancy, new SelectList(Model.constituencies, "ConstituancyId", "ConstituancyName"), "-Select Constituency-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblCurrent" class="text-primary"><strong>Current Address:</strong></label></td>
+                            <td>@Html.CheckBoxFor(u => u.NewAddress.IsCurrent)</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblDateMoved" class="text-primary"><strong>Date Moved:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.NewAddress.DateMoved, "{0:MM/dd/yyyy}", new { @class = "form-control", @type = "date" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Close</button>
+                    <button id="btnLogin" type="submit" class="btn btn-outline-success">Save Address</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,263 @@
+﻿@model ElectionApiFramework.Models.Village
+@{
+    switch (ViewBag.result)
+    {
+        case 5:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("MessageModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 4:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("EditModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 3:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("DeleteModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        default:
+            break;
+
+    }
+
+}
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <a href="@Url.Action("Logout","Home")" class="btn btn-outline-light me-2" type="button">Logout</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">Villages</h1>
+</div>
+
+<div class="container-fluid overflow-auto bg-light h-100">
+
+    @if (ViewData["Villages"] == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add Village
+        </button>
+        <br /><br />
+        <table border="1" cellpadding="2" class="table-bordered border-primary-subtle table table-primary table-striped">
+            <thead>
+                <tr>
+                    <th class="text-primary">Village ID   </th>
+                    <th class="text-primary">Village Name  </th>
+                    <th class="text-primary">Options  </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var village in (IEnumerable<ElectionApiFramework.Models.Village>)ViewData["Villages"])
+                {
+                    <tr>
+                        <td>@village.VillageId</td>
+                        <td>@village.VillageName</td>
+                        <td>@Html.ActionLink("Edit", "VillageEdit", new { id = village.VillageId }, new { @class = "text-success" })  @Html.ActionLink("Delete", "VillageDelete", new { id = village.VillageId }, new { @class = "text-danger" })</td>
+                    </tr>
+                }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+
+<!-- Modal Add-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Village Options</h1>
+            </div>
+            @using (Html.BeginForm("Village", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <table align="center" cellpadding="10" cellspacing="20">
+                        <tr>
+                            <td colspan="2" align="center"><h4 name="lblVillageID" class="text-primary"><strong>Add A Village</strong></h4></td>
+
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillageName" class="text-primary">Village Name:</label></td>
+                            <td><input placeholder="Enter Village Name" name="txtVillageName" class="form-control"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal Message-->
+<div class="modal fade" id="MessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Village Options</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit-->
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Village Options</h1>
+            </div>
+            @using (Html.BeginForm("VillageEdit", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <table align="center" cellpadding="10" cellspacing="20">
+                        <tr>
+                            <td colspan="2" align="center"><h4 name="lblVillageID" class="text-primary"><strong>Edit Village</strong></h4></td>
+
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillageID" class="text-primary">Village ID:</label></td>
+                            <td>@Html.TextBoxFor(u => u.VillageId, "", new { @class = "form-control", @readonly = "true" })  </td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillageName" class="text-primary">Village Name:</label></td>
+                            <td>@Html.TextBoxFor(u => u.VillageName, "", new { @class = "form-control" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete-->
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Village Options</h1>
+            </div>
+            @using (Html.BeginForm("VillageDelete", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <h4 class="text-danger" align="center"><strong>Confirm Delete ?</strong></h4>
+                    <table align="center" cellpadding="10" cellspacing="20">
+                        <tr>
+                            <td><label name="lblVillageID" class="text-primary">Village ID:</label></td>
+                            <td>@Html.TextBoxFor(u => u.VillageId, "", new { @class = "form-control", @readonly = "true" })  </td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillageName" class="text-primary">Village Name:</label></td>
+                            <td>@Html.TextBoxFor(u => u.VillageName, "", new { @class = "form-control", @readonly = "true" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Confirm Delete</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Village Options</h1>
+            </div>
+            <div class="modal-body">
+                <table align="center" cellpadding="10" cellspacing="20">
+                    <tr>
+                        <td><label name="lblVillageID" class="text-primary">Village ID:</label></td>
+                        <td><input class="form-control" id="txtVID" /></td>
+                    </tr>
+                    <tr>
+                        <td><label name="lblVillageName" class="text-primary">Village Name:</label></td>
+                        <td><input class="form-control" id="txtVName" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+<script>
+    function editmodal() {
+        let myModal = new bootstrap.Modal(
+            document.getElementById("exampleModal3"),
+            {}
+        );
+        myModal.show();
+    };
+</script>

@@ -1,0 +1,331 @@
+﻿@model ElectionApiFramework.ViewModels.UserVM
+@{
+    switch (ViewBag.result)
+    {
+        case 1:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("MessageModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 4:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("EditModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 3:
+        <script>
+            window.onload = function () {
+                let myModal = new bootstrap.Modal(
+                    document.getElementById("DeleteModal"),
+                    {}
+                );
+                myModal.show();
+            };
+        </script>
+            break;
+        case 6:
+            <script>
+                window.onload = function () {
+                let myModal = new bootstrap.Modal(
+                    document.getElementById("exampleModal"),
+                        {}
+                    );
+                myModal.show();
+            };
+            </script>
+            break;
+        default:
+            break;
+
+    }
+}
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <a href="@Url.Action("Logout","Home")" class="btn btn-outline-light me-2" type="button">Logout</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">User Registration</h1>
+</div>
+<div class="container-fluid overflow-auto bg-light h-100">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add User
+    </button>
+    @if (Model.users.Count == 0)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <br /><br />
+              <table border="1" cellpadding="2" class="table-bordered border-primary-subtle table table-primary table-striped">
+                  <thead>
+                      <tr>
+                          <th class="text-primary">User ID</th>
+                          <th class="text-primary">First Name </th>
+                          <th class="text-primary"> Last Name</th>
+                          <th class="text-primary"> Email</th>
+                          <th class="text-primary"> Position</th>
+                          <th class="text-primary"> Options</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach (var user in Model.users)
+                      {
+                          string x;
+                          if (@user.Position == 1)
+                          {
+                              x = "Adminstrator";
+                          }
+                          else
+                          {
+                              x = "Clerk";
+                          }
+
+                      <tr>
+                          <td>@user.UserId</td>
+                          <td>@user.Fname</td>
+                          <td>@user.Lname</td>
+                          <td>@user.Email</td>
+                          <td>@x</td>
+                          <td>@Html.ActionLink("Edit", "UserEdit", new { id = user.UserId }, new { @class = "text-success" })  @Html.ActionLink("Delete", "UserDelete", new { id = user.UserId }, new { @class = "text-danger" })</td>
+                      </tr>
+                  }
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+                      </tbody>
+                  </table>
+    }
+</div>
+
+<!-- Modal Add-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">User Options</h1>
+            </div>
+            @using (Html.BeginForm("UserSave", "Home", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                {
+                    <table cellpadding="2">
+                        <tr>
+                            <td colspan="3" align="center"><h4 name="lblHeader" class="text-primary"><strong> Add A User Profile</strong></h4></td>
+
+                        </tr>
+                        <tr hidden>
+                            <td><label name="lblUserID" class="text-primary"><strong>UserID :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddUser.UserId, "", new { @class = "form-control", @readonly = "true" }) </td>
+                        </tr>
+                        <tr>
+                            <td><label name="lbFName" class="text-primary"><strong>First Name :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddUser.Fname, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.AddUser.Fname, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblLName" class="text-primary"><strong>Last Name :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddUser.Lname, "", new { @class = "form-control" })</td>
+                            <td>@Html.ValidationMessageFor(u => u.AddUser.Lname, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblEmail" class="text-primary"><strong>Email :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddUser.Email, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.AddUser.Email, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPassword" class="text-primary"><strong>Password :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.AddUser.Password, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.AddUser.Password, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblGender" class="text-primary"><strong>Position :</strong></label></td>
+                            <td>
+                                @Html.DropDownListFor(u => u.AddUser.Position, new List<SelectListItem>{
+                                new SelectListItem {Value ="1",Text = "Admin" },
+                                new SelectListItem {Value ="2",Text = "Clerk" }},
+                             "-Select Position-", new { @class = "form-control" })
+                            </td>
+                            <td>@Html.ValidationMessageFor(u => u.AddUser.Position, "", new { @class = "text-danger" })</td>
+                        </tr>
+                    </table>
+                }
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">User Options</h1>
+            </div>
+            @using (Html.BeginForm("UserEdit", "Home", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                {
+                    <table cellpadding="2">
+                        <tr>
+                            <td colspan="3" align="center"><h4 name="lblHeader" class="text-primary"><strong> Edit A User Profile</strong></h4></td>
+                        </tr>
+                        <tr hidden>
+                            <td><label name="lblUserID" class="text-primary"><strong>UserID :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.EditUser.UserId, "", new { @class = "form-control", @readonly = "true" }) </td>
+                        </tr>
+                        <tr>
+                            <td><label name="lbFName" class="text-primary"><strong>First Name :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.EditUser.Fname, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.EditUser.Fname, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblLName" class="text-primary"><strong>Last Name :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.EditUser.Lname, "", new { @class = "form-control" })</td>
+                            <td>@Html.ValidationMessageFor(u => u.EditUser.Lname, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblEmail" class="text-primary"><strong>Email :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.EditUser.Email, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.EditUser.Email, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPassword" class="text-primary"><strong>Password :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.EditUser.Password, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.EditUser.Password, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblGender" class="text-primary"><strong>Position :</strong></label></td>
+                            <td>
+                                @Html.DropDownListFor(u => u.EditUser.Position, new List<SelectListItem>{
+                                new SelectListItem {Value ="1",Text = "Admin" },
+                                new SelectListItem {Value ="2",Text = "Clerk" }},
+                             "-Select Position-", new { @class = "form-control" })
+                            </td>
+                            <td>@Html.ValidationMessageFor(u => u.EditUser.Position, "", new { @class = "text-danger" })</td>
+                        </tr>
+                    </table>
+                }
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save Changes</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">User Options</h1>
+            </div>
+            @using (Html.BeginForm("UserDelete", "Home", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                {
+                    <table cellpadding="2">
+                        <tr>
+                            <td colspan="3" align="center"><h4 name="lblHeader" class="text-primary"><strong> Delete A User Profile</strong></h4></td>
+                        </tr>
+                        <tr hidden>
+                            <td><label name="lblUserID" class="text-primary"><strong>UserID :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.DeleteUser.UserId, "", new { @class = "form-control", @readonly = "true" }) </td>
+                        </tr>
+                        <tr>
+                            <td><label name="lbFName" class="text-primary"><strong>First Name :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.DeleteUser.Fname, "", new { @class = "form-control" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.DeleteUser.Fname, "", new { @class = "text-danger", @readonly = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblLName" class="text-primary"><strong>Last Name :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.DeleteUser.Lname, "", new { @class = "form-control", @readonly = "true" })</td>
+                            <td>@Html.ValidationMessageFor(u => u.DeleteUser.Lname, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblEmail" class="text-primary"><strong>Email :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.DeleteUser.Email, "", new { @class = "form-control", @readonly = "true" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.DeleteUser.Email, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPassword" class="text-primary"><strong>Password :</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.DeleteUser.Password, "", new { @class = "form-control", @readonly = "true" }) </td>
+                            <td>@Html.ValidationMessageFor(u => u.DeleteUser.Password, "", new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPosition" class="text-primary"><strong>Position :</strong></label></td>
+                            <td>
+                                @Html.DropDownListFor(u => u.DeleteUser.Position, new List<SelectListItem>{
+                                new SelectListItem {Value ="1",Text = "Admin" },
+                                new SelectListItem {Value ="2",Text = "Clerk" }},
+                             "-Select Position-", new { @class = "form-control" })
+                            </td>
+                            <td>@Html.ValidationMessageFor(u => u.DeleteUser.Position, "", new { @class = "text-danger" })</td>
+                        </tr>
+                    </table>
+                }
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Confirm Delete</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="MessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Message Alert</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

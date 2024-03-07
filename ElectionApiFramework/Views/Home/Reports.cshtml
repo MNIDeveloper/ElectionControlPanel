@@ -1,0 +1,275 @@
+﻿@model ElectionApiFramework.ViewModels.ReportsVM
+@{
+    if (ViewBag.result == 1)
+    {
+        <script>
+            window.onload = function () {
+                let myModal = new bootstrap.Modal(
+                    document.getElementById("MessageModal"),
+                    {}
+                );
+                myModal.show();
+            };
+        </script>
+    }
+}
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <a href="@Url.Action("Logout","Home")" class="btn btn-outline-light me-2" type="button">Logout</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">Reports</h1>
+</div>
+<div class="container-fluid bg-light h-100">
+    <br />
+    <a href="@Url.Action("StartElection","Home")" class="btn btn-success me-2" type="button">Start Election</a>
+    <a href="@Url.Action("StopElection","Home")" class="btn btn-danger me-2" type="button">Stop Election</a>
+    <br /><br />
+    <div class="accordion accordion-flush bg-light h-100"  id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <h4 class="text-primary" style="text-align: center">Election Results</h4>
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    @if (Model.Results.Count > 0)
+                    {
+                        <h3 class="text-primary" style="text-align: center">Election Results</h3>
+                        <table border="1" cellpadding="2" class="table-bordered border-primary-subtle table table-primary table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-primary">Name</th>
+                                    <th class="text-primary">Party</th>
+                                    <th class="text-primary">Votes</th>
+                                    <th class="text-primary">% of Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var result in Model.Results)
+                                {
+
+                                    <tr>
+                                        <td>@result.FirstName @result.LastName</td>
+                                        <td>@result.PartyName</td>
+                                        <td>@result.Votes</td>
+                                        <td>@result.Percentage.ToString("0.00")%</td>
+
+                                    </tr>
+
+                                }
+                                <tr>
+                                    <td> <strong>Total</strong></td>
+                                    <td></td>
+                                    <td><strong>@Model.TotalVotes</strong> </td>
+                                    <td><strong>@Model.TotalPercentage.ToString("0.00")%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    }
+                    else
+                    {
+                        <p><em>Loading</em></p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    <h4 class="text-primary" style="text-align: center">Party by Village Results</h4>
+                </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <h3 class="text-primary" style="text-align: center">Party by Village Results</h3>
+                    <table border="1" cellpadding="2" class="table-bordered border-primary-subtle table table-primary table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-primary">Party Name</th>
+                                <th class="text-primary">Independent Candidate</th>
+                                <th class="text-primary">MCAP</th>
+                                <th class="text-primary">PDM</th>
+                                <th class="text-primary">MULP</th>
+                                <th class="text-primary">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var vresult in Model.ByVillageResults)
+                            {
+
+                                <tr>
+                                    <td>@vresult.VillageName</td>
+                                    <td>@vresult.IndependentCandidate</td>
+                                    <td>@vresult.MCAP</td>
+                                    <td>@vresult.PDM</td>
+                                    <td>@vresult.MULP</td>
+                                    <td>@vresult.Total</td>
+
+                                </tr>
+
+                            }
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    <h4 class="text-primary" style="text-align: center">Election Summary Results</h4>
+                </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <table border="1" cellpadding="2" class="table-bordered border-primary-subtle table table-primary table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-primary">Item</th>
+                                <th class="text-primary">Details</th>
+                                <th class="text-primary">Quantity</th>
+                                <th class="text-primary">Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.</td>
+                                <td>Number of Registered Voters</td>
+                                <td>@Model.Summary.RegVoter</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Voter Turn Out</td>
+                                <td>@Model.Summary.VoterTurnOut</td>
+                                <td>@Model.VoterTurnOutPercentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>Total Number of Votes</td>
+                                <td>@Model.TotalVotes</td>
+                                <td>100%</td>
+                            </tr>
+                            <tr>
+                                <td>4.</td>
+                                <td>Number of 1 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate1</td>
+                                <td>@Model.Candidate1Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>5.</td>
+                                <td>Number of 2 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate2</td>
+                                <td>@Model.Candidate2Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>6.</td>
+                                <td>Number of 3 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate3</td>
+                                <td>@Model.Candidate3Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>7.</td>
+                                <td>Number of 4 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate4</td>
+                                <td>@Model.Candidate4Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>8.</td>
+                                <td>Number of 5 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate5</td>
+                                <td>@Model.Candidate5Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>9.</td>
+                                <td>Number of 6 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate6</td>
+                                <td>@Model.Candidate6Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>10.</td>
+                                <td>Number of 7 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate7</td>
+                                <td>@Model.Candidate7Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>11.</td>
+                                <td>Number of 8 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate8</td>
+                                <td>@Model.Candidate8Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td>12.</td>
+                                <td>Number of 9 Candidate Ballot </td>
+                                <td>@Model.Summary.Candidate9</td>
+                                <td>@Model.Candidate9Percentage.ToString("0.00")%</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="MessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Message Alert</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

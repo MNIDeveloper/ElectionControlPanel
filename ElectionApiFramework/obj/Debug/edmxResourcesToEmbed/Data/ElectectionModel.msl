@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="db_aa15ed_electionModelStoreContainer" CdmEntityContainer="ElectionEntities">
+    <EntitySetMapping Name="tlkpConstituancies">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpConstituancy">
+        <MappingFragment StoreEntitySet="tlkpConstituancy">
+          <ScalarProperty Name="ConstituancyID" ColumnName="ConstituancyID" />
+          <ScalarProperty Name="ConstituancyName" ColumnName="ConstituancyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tlkpParishes">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpParish">
+        <MappingFragment StoreEntitySet="tlkpParish">
+          <ScalarProperty Name="ParishID" ColumnName="ParishID" />
+          <ScalarProperty Name="ParishName" ColumnName="ParishName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tlkpParties">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpParty">
+        <MappingFragment StoreEntitySet="tlkpParty">
+          <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+          <ScalarProperty Name="PartyName" ColumnName="PartyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tlkpVillages">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tlkpVillage">
+        <MappingFragment StoreEntitySet="tlkpVillage">
+          <ScalarProperty Name="VillageID" ColumnName="VillageID" />
+          <ScalarProperty Name="VillageName" ColumnName="VillageName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblElections">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblElection">
+        <MappingFragment StoreEntitySet="tblElection">
+          <ScalarProperty Name="Candidate9" ColumnName="Candidate9" />
+          <ScalarProperty Name="Candidate8" ColumnName="Candidate8" />
+          <ScalarProperty Name="Candidate7" ColumnName="Candidate7" />
+          <ScalarProperty Name="Candidate6" ColumnName="Candidate6" />
+          <ScalarProperty Name="Candidate5" ColumnName="Candidate5" />
+          <ScalarProperty Name="Candidate4" ColumnName="Candidate4" />
+          <ScalarProperty Name="Candidate3" ColumnName="Candidate3" />
+          <ScalarProperty Name="Candidate2" ColumnName="Candidate2" />
+          <ScalarProperty Name="Candidate1" ColumnName="Candidate1" />
+          <ScalarProperty Name="Constituancy" ColumnName="Constituancy" />
+          <ScalarProperty Name="ElectionDate" ColumnName="ElectionDate" />
+          <ScalarProperty Name="VotersID" ColumnName="VotersID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAddresses">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblAddress">
+        <MappingFragment StoreEntitySet="tblAddress">
+          <ScalarProperty Name="DateMoved" ColumnName="DateMoved" />
+          <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+          <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+          <ScalarProperty Name="Constituancy" ColumnName="Constituancy" />
+          <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+          <ScalarProperty Name="Parish" ColumnName="Parish" />
+          <ScalarProperty Name="Village" ColumnName="Village" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCandidates">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblCandidate">
+        <MappingFragment StoreEntitySet="tblCandidate">
+          <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+          <ScalarProperty Name="CandidateImageWeb" ColumnName="CandidateImageWeb" />
+          <ScalarProperty Name="CandidateImage" ColumnName="CandidateImage" />
+          <ScalarProperty Name="Constituancy" ColumnName="Constituancy" />
+          <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+          <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+          <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPersons">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblPerson">
+        <MappingFragment StoreEntitySet="tblPerson">
+          <ScalarProperty Name="QrCode" ColumnName="QrCode" />
+          <ScalarProperty Name="PersonImage" ColumnName="PersonImage" />
+          <ScalarProperty Name="SocialSecurity" ColumnName="SocialSecurity" />
+          <ScalarProperty Name="Pin" ColumnName="Pin" />
+          <ScalarProperty Name="vFlag" ColumnName="vFlag" />
+          <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Alias" ColumnName="Alias" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUsers">
+      <EntityTypeMapping TypeName="db_aa15ed_electionModel.tblUser">
+        <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="Flag" ColumnName="Flag" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Lname" ColumnName="Lname" />
+          <ScalarProperty Name="Fname" ColumnName="Fname" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ElectionTally" FunctionName="db_aa15ed_electionModel.Store.ElectionTally" />
+    <FunctionImportMapping FunctionImportName="PartyByVillages" FunctionName="db_aa15ed_electionModel.Store.PartyByVillages" />
+    <FunctionImportMapping FunctionImportName="ElectionSummary" FunctionName="db_aa15ed_electionModel.Store.ElectionSummary" />
+    <FunctionImportMapping FunctionImportName="CloseElection" FunctionName="db_aa15ed_electionModel.Store.CloseElection" />
+    <FunctionImportMapping FunctionImportName="StartElection" FunctionName="db_aa15ed_electionModel.Store.StartElection" />
+  </EntityContainerMapping>
+</Mapping>

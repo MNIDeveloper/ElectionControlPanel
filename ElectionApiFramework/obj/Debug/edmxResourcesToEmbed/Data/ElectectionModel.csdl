@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_aa15ed_electionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tlkpConstituancy">
+    <Key>
+      <PropertyRef Name="ConstituancyID" />
+    </Key>
+    <Property Name="ConstituancyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ConstituancyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tlkpParish">
+    <Key>
+      <PropertyRef Name="ParishID" />
+    </Key>
+    <Property Name="ParishID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParishName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tlkpParty">
+    <Key>
+      <PropertyRef Name="PartyID" />
+    </Key>
+    <Property Name="PartyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PartyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tlkpVillage">
+    <Key>
+      <PropertyRef Name="VillageID" />
+    </Key>
+    <Property Name="VillageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VillageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="ElectionEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tlkpConstituancies" EntityType="Self.tlkpConstituancy" />
+    <EntitySet Name="tlkpParishes" EntityType="Self.tlkpParish" />
+    <EntitySet Name="tlkpParties" EntityType="Self.tlkpParty" />
+    <EntitySet Name="tlkpVillages" EntityType="Self.tlkpVillage" />
+    <EntitySet Name="tblElections" EntityType="db_aa15ed_electionModel.tblElection" />
+    <EntitySet Name="tblAddresses" EntityType="db_aa15ed_electionModel.tblAddress" />
+    <EntitySet Name="tblCandidates" EntityType="db_aa15ed_electionModel.tblCandidate" />
+    <EntitySet Name="tblPersons" EntityType="db_aa15ed_electionModel.tblPerson" />
+    <EntitySet Name="tblUsers" EntityType="db_aa15ed_electionModel.tblUser" />
+    <FunctionImport Name="ElectionTally" />
+    <FunctionImport Name="PartyByVillages" />
+    <FunctionImport Name="ElectionSummary" />
+    <FunctionImport Name="CloseElection" />
+    <FunctionImport Name="StartElection" />
+  </EntityContainer>
+  <EntityType Name="tblElection">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VotersID" Type="Int32" Nullable="false" />
+    <Property Name="ElectionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Constituancy" Type="Int32" Nullable="false" />
+    <Property Name="Candidate1" Type="Int32" Nullable="false" />
+    <Property Name="Candidate2" Type="Int32" Nullable="false" />
+    <Property Name="Candidate3" Type="Int32" Nullable="false" />
+    <Property Name="Candidate4" Type="Int32" Nullable="false" />
+    <Property Name="Candidate5" Type="Int32" Nullable="false" />
+    <Property Name="Candidate6" Type="Int32" Nullable="false" />
+    <Property Name="Candidate7" Type="Int32" Nullable="false" />
+    <Property Name="Candidate8" Type="Int32" Nullable="false" />
+    <Property Name="Candidate9" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblAddress">
+    <Key>
+      <PropertyRef Name="AddressID" />
+    </Key>
+    <Property Name="AddressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Village" Type="Int32" Nullable="false" />
+    <Property Name="Parish" Type="Int32" Nullable="false" />
+    <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Constituancy" Type="Int32" Nullable="false" />
+    <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+    <Property Name="PersonID" Type="Int32" Nullable="false" />
+    <Property Name="DateMoved" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblCandidate">
+    <Key>
+      <PropertyRef Name="CandidateID" />
+    </Key>
+    <Property Name="CandidateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PersonID" Type="Int32" Nullable="false" />
+    <Property Name="PartyID" Type="Int32" Nullable="false" />
+    <Property Name="Constituancy" Type="Int32" Nullable="false" />
+    <Property Name="CandidateImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CandidateImageWeb" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblPerson">
+    <Key>
+      <PropertyRef Name="PersonID" />
+    </Key>
+    <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Alias" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="Int32" />
+    <Property Name="RegDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="vFlag" Type="Boolean" Nullable="false" />
+    <Property Name="Pin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SocialSecurity" Type="Int32" />
+    <Property Name="PersonImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="QrCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Fname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Position" Type="Int32" Nullable="false" />
+    <Property Name="Flag" Type="Boolean" Nullable="false" />
+  </EntityType>
+</Schema>

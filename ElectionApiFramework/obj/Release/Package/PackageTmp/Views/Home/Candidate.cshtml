@@ -1,0 +1,165 @@
+﻿@model ElectionApiFramework.ViewModels.CandidatePerson
+@{
+    if (ViewBag.result == 1)
+    {
+        <script>
+            window.onload = function () {
+                let myModal = new bootstrap.Modal(
+                    document.getElementById("exampleModal"),
+                    {}
+                );
+                myModal.show();
+            };
+        </script>
+    }
+}
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <a href="@Url.Action("Logout","Home")" class="btn btn-outline-light me-2" type="button">Logout</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">Candidate Registration</h1>
+</div>
+<div class="container-fluid bg-light h-100">
+    <div class="row">
+        <div class="col-6">
+            @using (Html.BeginForm("CandidateSave", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <table cellpadding="2">
+                <tr>
+                    <td colspan="3" align="center"><h4 class="text-primary"> <strong>Candidate Section</strong></h4></td>
+                </tr>
+                <tr>
+                    <td><label name="lbFName" class="text-primary"><strong>Full Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.FullName, "", new { @class = "form-control" }) </td>
+                    <td>@Html.ValidationMessageFor(u => u.FullName, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr hidden>
+                    <td><label name="lbCandidate" class="text-primary"><strong>Candidate ID :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.CandidateId, "", new { @class = "form-control", @readonly = "true" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbPerson" class="text-primary"><strong>Person ID :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.PersonId, "", new { @class = "form-control", @readonly = "true" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.PersonId, "", new { @class = "text-danger", })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbParty" class="text-primary"><strong>Party :</strong></label></td>
+                    <td>@Html.DropDownListFor(u => u.Party, new SelectList(Model.parties, "PartyId", "PartyName"), "-Select Party-", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.Party, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbParty" class="text-primary"><strong>Constituency :</strong></label></td>
+                    <td>@Html.DropDownListFor(u => u.Constituancy, new SelectList(Model.constituencies, "ConstituancyId", "ConstituancyName"), "-Select Constituency-", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.Constituancy, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td hidden><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                    <td hidden>@Html.TextBoxFor(u => u.CandidateImage, "", new { @class = "form-control"})</td>
+                </tr>
+                <tr>
+                    <td><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.ImageData, "", new { @class = "form-control", @type = "file" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblCurrent" class="text-primary"><strong>For Current Election:</strong></label></td>
+                    <td>@Html.CheckBoxFor(u => u.IsCurrent)</td>
+                </tr>
+                <tr>
+                    <td><input name="btnLogin" type="submit" class="btn btn-outline-success" value="Save Candidate" /></td>
+                    <td><a href="@Url.Action("CandidateDetails","Home")" class="btn btn-outline-primary me-2" type="button">Candidate Details</a></td>
+                </tr>
+            </table>
+            }
+            </div>
+        <div class="col-6">
+            @using (Html.BeginForm("CandidateSearch", "Home", FormMethod.Post))
+            {
+                <table>
+                    <tr>
+                        <td colspan="3" align="center"><h4 class="text-primary"> <strong>Voter Search Section</strong></h4></td>
+                    </tr>
+                    <tr>
+                        <td><input placeholder="First Name" name="txtFname" class="form-control" /></td>
+                        <td><input placeholder="Last Name" name="txtLname" class="form-control" /></td>
+                        <td><button type="submit" class="btn btn-outline-primary">Search</button></td>
+                    </tr>
+                </table>
+            }
+            <br />
+            @if (Model.VoterList.Count == 0)
+            {
+
+            }
+            else
+            {
+
+                <span class="text-primary"><strong>All Available Details Matching Search Criterior</strong></span><br /><br />
+                <table id="tblVotersList" class="table-bordered border-primary-subtle table table-primary table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-primary">Voter's ID'</th>
+                            <th class="text-primary">First Name</th>
+                            <th class="text-primary">Last Name</th>
+                            <th class="text-primary">Alias</th>
+                            <th class="text-primary">DOB</th>
+                            <th class="text-primary">Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var voter in @Model.VoterList)
+                        {
+                            <tr>
+                                <td>@voter.PersonId</td>
+                                <td>@voter.FirstName</td>
+                                <td>@voter.LastName</td>
+                                <td>@voter.Alias</td>
+                                <td>@voter.Dob.ToString("dd/MM/yyyy")</td>                                
+                                <td>@Html.ActionLink("Select", "CandidateSelect", new { id = voter.PersonId }, new { @class = "text-success" })</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+            </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Message Alert</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

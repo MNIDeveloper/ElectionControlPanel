@@ -1,0 +1,249 @@
+﻿@model ElectionApiFramework.ViewModels.VoterPerson
+
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <a href="@Url.Action("Logout","Home")" class="btn btn-outline-light me-2" type="button">Logout</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">Voter Registration</h1>
+</div>
+<div class="container-fluid bg-light h-100">
+    <div class="row">
+        <div class="col-6">
+            @using (Html.BeginForm("VoterSave", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <table cellpadding="2">
+                <tr>
+                    <td colspan="3" align="center"><h4 class="text-primary"> <strong>Person Section</strong></h4></td>
+                </tr>
+                <tr>
+                    <td><label name="lbFName" class="text-primary"><strong>First Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.FirstName, "", new { @class = "form-control" }) </td>
+                    <td>@Html.ValidationMessageFor(u => u.FirstName, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbMName" class="text-primary"><strong>Middle Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.MiddleName, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblLName" class="text-primary"><strong>Last Name :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.LastName, "", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.LastName, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblGender" class="text-primary"><strong>Gender :</strong></label></td>
+                    <td>
+                        @Html.DropDownListFor(u => u.Gender, new List<SelectListItem>{
+                        new SelectListItem {Value ="Male",Text = "Male" },
+                        new SelectListItem {Value ="Female",Text = "Female" }},
+                        "-Select Gender-", new { @class = "form-control" })
+                    </td>
+                    <td>@Html.ValidationMessageFor(u => u.Gender, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblDOB" class="text-primary"><strong>DOB :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.Dob, "", new { @type = "date", @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.Dob, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblAlias" class="text-primary"><strong>Alias :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.Alias, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblSocial" class="text-primary"><strong>Social Security #:</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.SocialSecurity, "", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.SocialSecurity, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lblPin" class="text-primary"><strong>Pin #:</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.Pin, "", new { @class = "form-control" })</td>
+                    <td>@Html.ValidationMessageFor(u => u.Pin, "", new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td hidden><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                    <td hidden>@Html.TextBoxFor(u => u.PersonImage, "", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><label name="lbImage" class="text-primary"><strong>Voter Image :</strong></label></td>
+                    <td>@Html.TextBoxFor(u => u.ImageData, "", new { @class = "form-control", @type = "file" })</td>
+                    <!-- <td>@Html.ValidationMessageFor(u => u.ImageData, "", new { @class = "text-danger" })</td>-->
+                </tr>
+                @if (Model.AddressFlag)
+                {
+
+                }
+                else
+                {
+                    <tr>
+                        <td><input name="btnLogin" type="submit" class="btn btn-outline-success" value="Save Voter and Add Address" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden>
+                                Add Village
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            }
+            @if (Model.AddressFlag)
+            {
+                using (Html.BeginForm("AddressSave", "Home", FormMethod.Post))
+                {
+                    <table>
+                        <tr>
+                            <td colspan="3" align="center"><h4 class="text-primary"> <strong>Address Section</strong></h4></td>                            
+                        </tr>
+                        <tr>
+                            <td hidden><label name="lblPersonID" class="text-primary" hidden><strong>Street:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressObject.PersonId, "", new { @class = "form-control", @hidden = "true" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblStreet" class="text-primary"><strong>Street:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressObject.Street, "", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblVillage" class="text-primary"><strong>Village:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.addressObject.Village, new SelectList(Model.villages, "VillageId", "VillageName"), "-Select Village-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblParish" class="text-primary"><strong>Parish:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.addressObject.Parish, new SelectList(Model.parishes, "ParishId", "ParishName"), "-Select Parish-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblPostcode" class="text-primary"><strong>Postcode:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressObject.Postcode, "", new { @placeholder = "MSR XXXX", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblConstituency" class="text-primary"><strong>Constituency:</strong></label></td>
+                            <td>@Html.DropDownListFor(u => u.addressObject.Constituancy, new SelectList(Model.constituencies, "ConstituancyId", "ConstituancyName"), "-Select Constituency-", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblCurrent" class="text-primary"><strong>Current Address:</strong></label></td>
+                            <td>@Html.CheckBoxFor(u => u.AddressIsCurrent)</td>
+                        </tr>
+                        <tr>
+                            <td><label name="lblDateMoved" class="text-primary"><strong>Date Moved:</strong></label></td>
+                            <td>@Html.TextBoxFor(u => u.addressObject.DateMoved, new { @class = "form-control", @type = "date" })</td>
+                        </tr>
+                        <tr>
+                            <td><input name="btnLogin" type="submit" class="btn btn-outline-success" value="Save Address" /></td>
+                        </tr>
+                    </table>
+                }
+            }
+            else
+            {
+
+
+            }
+        </div>
+        <div class="col-6">
+            @using (Html.BeginForm("VoterSearch", "Home", FormMethod.Post))
+            {
+                <table>
+                    <tr>
+                        <td colspan="3" align="center"><h4 class="text-primary"> <strong>Voter Search Section</strong></h4></td>
+                    </tr>
+                    <tr>
+                        <td><input placeholder="First Name" name="txtFname" class="form-control" /></td>
+                        <td><input placeholder="Last Name" name="txtLname" class="form-control" /></td>
+                        <td><button type="submit" class="btn btn-outline-primary">Search</button></td>
+                    </tr>
+                </table>
+            }
+            <br />
+            @if (Model.VoterList.Count == 0)
+            {
+
+            }
+            else
+            {
+                <span class="text-primary"><strong>All Available Details Matching Search Criterior</strong></span><br /><br />
+                <table id="tblVotersList" class="table-bordered border-primary-subtle table table-primary table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-primary">Voter's ID'</th>
+                            <th class="text-primary">First Name</th>
+                            <th class="text-primary">Last Name</th>
+                            <th class="text-primary">Alias</th>
+                            <th class="text-primary">DOB</th>
+                            <th class="text-primary">Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var voter in @Model.VoterList)
+                         {
+                            <tr>
+                                <td>@voter.PersonId</td>
+                                <td>@voter.FirstName</td>
+                                <td>@voter.LastName</td>
+                                <td>@voter.Alias</td>
+                                <td>@voter.Dob.ToString("dd/MM/yyyy")</td>
+                                <td>@Html.ActionLink("Details", "VoterDetails", new { id = voter.PersonId }, new { @class = "text-success" })</td>                                
+                            </tr>
+                         }
+                    
+                    </tbody>
+                </table>
+            }
+
+        </div>
+    </div>
+</div>
+@{
+    if (ViewBag.result == 1)
+    {
+    <script>
+        window.onload = function () {
+            let myModal = new bootstrap.Modal(
+                document.getElementById("exampleModal"),
+                {}
+            );
+            myModal.show();
+        };
+    </script>
+    }
+}
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Message Alert</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

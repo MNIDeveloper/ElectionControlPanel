@@ -1,0 +1,249 @@
+﻿@model ElectionApiFramework.ViewModels.CandidateDetailsVM
+@{
+    switch (ViewBag.result)
+    {
+        case 5:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("MessageModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 4:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("EditModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        case 3:
+            <script>
+                window.onload = function () {
+                    let myModal = new bootstrap.Modal(
+                        document.getElementById("DeleteModal"),
+                        {}
+                    );
+                    myModal.show();
+                };
+            </script>
+            break;
+        default:
+            break;
+
+    }
+}
+
+<nav class="navbar navbar-dark bg-primary rounded-pill">
+    <form class="container-fluid justify-content-start">
+        <a href="@Url.Action("Main","Home")" class="btn btn-outline-light me-2" type="button">Main</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Registration
+            </button>
+            <ul class="dropdown-menu">
+                <li class="bg-primary"><a href="@Url.Action("Voter","Home")" class="dropdown-item" type="button">Voter</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Candidate","Home")" class="dropdown-item" type="button">Candidate</a></li>
+                <li class="bg-primary"><a href="@Url.Action("Party","Home")" class="dropdown-item" type="button">Party</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Constituency","Home")" class="btn btn-outline-light me-2" type="button">Constituency Options</a>
+        <a href="@Url.Action("Village","Home")" class="btn btn-outline-light me-2" type="button">Village Options</a>
+        <a href="@Url.Action("Parish","Home")" class="btn btn-outline-light me-2" type="button">Parish Options</a>
+        <a href="@Url.Action("Users","Home")" class="btn btn-outline-light me-2" type="button">User Options</a>
+        <a href="@Url.Action("Reports","Home")" class="btn btn-outline-light me-2" type="button">Reports</a>
+        <label class="text-light" id="lblUser">Logged in as : @((Session["UserCred"] as ElectionApiFramework.Models.User).Fname) @((Session["UserCred"] as ElectionApiFramework.Models.User).Lname) </label>
+
+    </form>
+</nav>
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary">Candidate Details</h1>
+</div>
+<div class="container-fluid overflow-auto bg-light h-100">
+
+    @if (Model.candidates.Count == 0)
+    {
+        <p><em>Loading</em></p>
+    }
+    else
+    {
+        <table border="1" cellpadding="2" class="table-bordered border-primary-subtle table table-primary table-striped">
+            <thead>
+                <tr>
+                    <th class="text-primary">Image</th>
+                    <th class="text-primary">Candidate Details</th>
+                    <th class="text-primary">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var candidate in Model.candidates)
+                {
+                    <tr>
+                        <td><img src="@Url.Content(candidate.CandidateImage)" width="100" height="120" /></td>
+                        <td>
+                            Candidate Name : @candidate.FullName <br />
+                            Candidate ID   :@candidate.CandidateId<br />
+                            Party :         @candidate.Party<br />
+                            Constitency :   @candidate.Constituancy
+                        </td>
+                        <td>@Html.ActionLink("Edit", "CandidateEdit", new { id = candidate.CandidateId }, new { @class = "text-success" })  
+                            @Html.ActionLink("Delete", "CandidateDelete", new { id = candidate.CandidateId }, new { @class = "text-danger" })</td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="MessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Candidate Options</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Candidate Options</h1>
+            </div>
+            @using (Html.BeginForm("CandidateEdit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <table cellpadding="2">
+            <tr>
+                <td colspan="3" align="center"><h4 class="text-primary"> <strong>Candidate Update</strong></h4></td>
+            </tr>
+            <tr>
+                <td><label name="lbFName" class="text-primary"><strong>Full Name :</strong></label></td>
+                <td>@Html.TextBoxFor(u => u.candidateEdit.FullName, "", new { @class = "form-control", @readonly = "true" }) </td>
+                <td>@Html.ValidationMessageFor(u => u.candidateEdit.FullName, "", new { @class = "text-danger", @readonly = "true" })</td>
+            </tr>
+            <tr>
+                <td><label name="lbCandidate" class="text-primary"><strong>Candidate ID :</strong></label></td>
+                <td>@Html.TextBoxFor(u => u.candidateEdit.CandidateId, "", new { @class = "form-control", @readonly = "true" })</td>
+            </tr>
+            <tr>
+                <td><label name="lbPerson" class="text-primary"><strong>Person ID :</strong></label></td>
+                <td>@Html.TextBoxFor(u => u.candidateEdit.PersonId, "", new { @class = "form-control", @readonly = "true" })</td>
+                <td>@Html.ValidationMessageFor(u => u.candidateEdit.PersonId, "", new { @class = "text-danger", })</td>
+            </tr>
+            <tr>
+                <td><label name="lbParty" class="text-primary"><strong>Party :</strong></label></td>
+                <td>@Html.DropDownListFor(u => u.candidateEdit.Party, new SelectList(Model.parties, "PartyId", "PartyName"), "-Select Party-", new { @class = "form-control" })</td>
+                <td>@Html.ValidationMessageFor(u => u.candidateEdit.Party, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr>
+                <td><label name="lbParty" class="text-primary"><strong>Constituency :</strong></label></td>
+                <td>@Html.DropDownListFor(u => u.candidateEdit.Constituancy, new SelectList(Model.constituencies, "ConstituancyId", "ConstituancyName"), "-Select Constituency-", new { @class = "form-control" })</td>
+                <td>@Html.ValidationMessageFor(u => u.candidateEdit.Constituancy, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr>
+                <td hidden><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                <td hidden>@Html.TextBoxFor(u => u.candidateEdit.CandidateImage, "", new { @class = "form-control" })</td>
+            </tr>
+            <tr>
+                <td hidden><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                <td hidden>@Html.TextBoxFor(u => u.candidateEdit.CandidateImageWeb, "", new { @class = "form-control" })</td>
+            </tr>
+            <tr>
+                <td><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                <td>@Html.TextBoxFor(u => u.candidateEdit.ImageData, "", new { @class = "form-control", @type = "file" })</td>
+            </tr>
+            <tr>
+                <td><label name="lblCurrent" class="text-primary"><strong>For Current Election:</strong></label></td>
+                <td>@Html.CheckBoxFor(u => u.candidateEdit.IsCurrent)</td>
+            </tr>
+        </table>
+            
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save Changes</button>
+            </div>
+            }
+        </div>
+     </div>
+</div>
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Candidate Options</h1>
+            </div>
+            @using (Html.BeginForm("CandidateDelete", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <table cellpadding="2">
+                    <tr>
+                        <td colspan="3" align="center"><h4 class="text-danger"> <strong>Confirm Candidate Delete?</strong></h4></td>
+                    </tr>
+                    <tr>
+                        <td><label name="lbFName" class="text-primary"><strong>Full Name :</strong></label></td>
+                        <td>@Html.TextBoxFor(u => u.candidateDelete.FullName, "", new { @class = "form-control", @readonly = "true" }) </td>
+                        <td>@Html.ValidationMessageFor(u => u.candidateDelete.FullName, "", new { @class = "text-danger", @readonly = "true" })</td>
+                    </tr>
+                    <tr>
+                        <td><label name="lbCandidate" class="text-primary"><strong>Candidate ID :</strong></label></td>
+                        <td>@Html.TextBoxFor(u => u.candidateDelete.CandidateId, "", new { @class = "form-control", @readonly = "true" })</td>
+                    </tr>
+                    <tr>
+                        <td><label name="lbPerson" class="text-primary"><strong>Person ID :</strong></label></td>
+                        <td>@Html.TextBoxFor(u => u.candidateDelete.PersonId, "", new { @class = "form-control", @readonly = "true" })</td>
+                        <td>@Html.ValidationMessageFor(u => u.candidateDelete.PersonId, "", new { @class = "text-danger", })</td>
+                    </tr>
+                    <tr>
+                        <td><label name="lbParty" class="text-primary"><strong>Party :</strong></label></td>
+                        <td>@Html.DropDownListFor(u => u.candidateDelete.Party, new SelectList(Model.parties, "PartyId", "PartyName"), "-Select Party-", new { @class = "form-control", @readonly = "true" })</td>
+                        <td>@Html.ValidationMessageFor(u => u.candidateDelete.Party, "", new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td><label name="lbParty" class="text-primary"><strong>Constituency :</strong></label></td>
+                        <td>@Html.DropDownListFor(u => u.candidateDelete.Constituancy, new SelectList(Model.constituencies, "ConstituancyId", "ConstituancyName"), "-Select Constituency-", new { @class = "form-control", @readonly = "true" })</td>
+                        <td>@Html.ValidationMessageFor(u => u.candidateDelete.Constituancy, "", new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td hidden><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                        <td hidden>@Html.TextBoxFor(u => u.candidateDelete.CandidateImage, "", new { @class = "form-control", @readonly = "true" })</td>
+                    </tr>
+                    <tr>
+                        <td><label name="lbImage" class="text-primary"><strong>Candidate Image :</strong></label></td>
+                        <td>@Html.TextBoxFor(u => u.candidateDelete.ImageData, "", new { @class = "form-control", @type = "file", @readonly = "true" })</td>
+                    </tr>
+                    <tr>
+                        <td><label name="lblCurrent" class="text-primary"><strong>For Current Election:</strong></label></td>
+                        <td>@Html.CheckBoxFor(u => u.candidateDelete.IsCurrent,new { @readonly = "true" })</td>
+                    </tr>
+                </table>
+            
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" id="btnCancel" class="btn btn-danger">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Confirm Delete</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

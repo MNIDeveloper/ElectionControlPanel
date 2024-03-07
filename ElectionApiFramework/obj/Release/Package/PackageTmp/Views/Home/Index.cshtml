@@ -1,0 +1,64 @@
+﻿@{
+    if (ViewBag.result == 2)
+    {
+        <script>
+            window.onload = function () {
+                let myModal = new bootstrap.Modal(
+                    document.getElementById("exampleModal"),
+                    {}
+                );
+                myModal.show();
+            };
+        </script>
+    }
+}
+<div style="text-align:center;" class="bg-light h-100">
+    <h1 class="text-primary"> Welcome to the Electronic Electorial System Administration </h1>
+    <img src="/images/montserrat.gif" />
+    <br><br><br><br><br><br>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        <table align="center" cellpadding="5" class="rounded-4 bg-primary">
+            <tr>
+                <td><label class="text-light"><strong>Secure Login </strong></label></td>
+            </tr>
+            <tr>
+                <td><input placeholder="Enter Username" name="txtUsername" class="form-control" style="text-align:center;"/></td>
+            </tr>
+            <tr>
+                <td><input placeholder="Enter Password" name="txtPassword" class="form-control" type="password" style="text-align:center;"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><button name="btnLogin" type="submit" class="btn btn-light">Login</button></td>
+            </tr>
+        </table>
+    }
+    <br /><br /><br /> <br /><br /><br />
+    <br /><br /><br /> <br /><br /><br />
+
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden="hidden">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Message Alert</h1>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.Msg</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
